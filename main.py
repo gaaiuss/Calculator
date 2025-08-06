@@ -22,7 +22,7 @@ if __name__ == '__main__':
     app.setWindowIcon(QIcon(str(ICON_PATH)))
 
     # Info
-    info = Info('25.53 ^ 2.0')
+    info = Info()
     window.addToLayout(info)
 
     # Display
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     window.addToLayout(display)
 
     # Grid
-    buttonsGrid = ButtonsGrid()
+    buttonsGrid = ButtonsGrid(display, info, window)
     window.vLayout.addLayout(buttonsGrid)
 
     # Execute everything
