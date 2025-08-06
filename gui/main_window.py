@@ -1,7 +1,7 @@
 from resource.variables import ICON_PATH
 
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QMainWindow, QMessageBox, QVBoxLayout, QWidget
 
 
 class MainWindow(QMainWindow):
@@ -28,3 +28,6 @@ class MainWindow(QMainWindow):
 
     def addToLayout(self, widget: QWidget):
         self.vLayout.addWidget(widget)
+
+    def makeMsgBox(self):
+        return QMessageBox(self)
