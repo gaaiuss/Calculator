@@ -61,7 +61,7 @@ class ButtonsGrid(QGridLayout):
 
     def _makeGrid(self):
         self.display.eqPressed.connect(self._equal)
-        self.display.delPressed.connect(self.display.backspace)
+        self.display.delPressed.connect(self._backspace)
         self.display.clearPressed.connect(self._clear)
         self.display.inputPressed.connect(self._insertToDisplay)
         self.display.operatorPressed.connect(self._configLeftOperation)
@@ -120,6 +120,7 @@ class ButtonsGrid(QGridLayout):
 
         newNumber = float(displayText) * -1
         self.display.setText(str(newNumber))
+        self.display.setFocus()
 
     @Slot()
     def _insertToDisplay(self, text):
@@ -129,6 +130,7 @@ class ButtonsGrid(QGridLayout):
             return
 
         self.display.insert(text)
+        self.display.setFocus()
 
     @Slot()
     def _clear(self):
@@ -137,6 +139,7 @@ class ButtonsGrid(QGridLayout):
         self._operator = None
         self.equation = ''
         self.display.clear()
+        self.display.setFocus()
 
     @Slot()
     def _configLeftOperation(self, text):
@@ -152,12 +155,13 @@ class ButtonsGrid(QGridLayout):
 
         self._operator = text
         self.equation = f'{self._leftNumber} {self._operator}'
+        self.display.setFocus()
 
     @Slot()
     def _equal(self):
         displayText = self.display.text()
 
-        if not isValidNumber(displayText):
+        if not isValidNumber(displayText) or self._leftNumber is None:
             return
 
         self._rightNumber = float(displayText)
@@ -184,6 +188,13 @@ class ButtonsGrid(QGridLayout):
         if result == 'error':
             self._leftNumber = None
 
+        self.display.setFocus()
+
+    @Slot()
+    def _backspace(self):
+        self.display.backspace()
+        self.display.setFocus()
+
     def _showError(self, msg: str):
         msgBox = self.window.makeMsgBox()
         msgBox.setText(msg)
@@ -195,6 +206,7 @@ class ButtonsGrid(QGridLayout):
         )
 
         msgBox.exec()
+        self.display.setFocus()
         # result = msgBox.exec()
 
         # if result == msgBox.StandardButton.Ok:
